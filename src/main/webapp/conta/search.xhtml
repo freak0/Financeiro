@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:forgeview="http://jboss.org/forge/view"
+	template="/resources/scaffold/pageTemplate.xhtml">
+
+	<f:metadata>
+		<f:viewParam name="page" value="#{contaBean.page}"/>
+		<f:event type="preRenderView" listener="#{contaBean.paginate}"/>
+	</f:metadata>
+
+	<ui:param name="pageTitle" value="Search Conta entities"/>
+
+	<ui:define name="header">
+		Conta
+	</ui:define>
+
+	<ui:define name="subheader">
+		Search Conta entities
+	</ui:define>
+
+	<ui:define name="footer"/>
+
+	<ui:define name="main">
+		<h:form id="search">
+			<f:validateBean disabled="true">
+				<h:panelGroup styleClass="search">
+
+					<h:panelGrid columnClasses="label,component,required" columns="3">
+						<h:outputLabel for="contaBeanExampleNome" value="Nome:"/>
+						<h:panelGroup>
+							<h:inputText id="contaBeanExampleNome" maxLength="75" value="#{contaBean.example.nome}"/>
+							<h:message for="contaBeanExampleNome" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+						<h:outputLabel for="contaBeanExampleTipoConta" value="Tipo Conta:"/>
+						<h:panelGroup>
+							<h:selectOneMenu converter="#{tipoContaBean.converter}" id="contaBeanExampleTipoConta" value="#{contaBean.example.tipoConta}">
+								<f:selectItem/>
+								<f:selectItems itemLabel="#{forgeview:display(_item)}" itemValue="#{_item}" value="#{tipoContaBean.all}" var="_item"/>
+							</h:selectOneMenu>
+							<h:message for="contaBeanExampleTipoConta" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+						<h:outputLabel for="contaBeanExampleDescricaoConta" value="Descricao Conta:"/>
+						<h:panelGroup>
+							<h:inputText id="contaBeanExampleDescricaoConta" value="#{contaBean.example.descricaoConta}"/>
+							<h:message for="contaBeanExampleDescricaoConta" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+					</h:panelGrid>
+					<h:panelGroup styleClass="buttons">
+						<h:commandLink value="Search" action="#{contaBean.search}" styleClass="btn btn-primary"/>
+						<h:commandLink value="Create New" action="#{contaBean.create}" styleClass="btn btn-primary"/>
+					</h:panelGroup>
+				</h:panelGroup>
+			</f:validateBean>
+			
+			<h:dataTable id="contaBeanPageItems" styleClass="data-table" value="#{contaBean.pageItems}" var="_item">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Nome"/>
+					</f:facet>
+					<h:link outcome="/conta/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="itemNome" value="#{_item.nome}"/>
+					</h:link>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Data Abertura"/>
+					</f:facet>
+					<h:link outcome="/conta/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="itemDataAbertura" value="#{_item.dataAbertura}">
+							<f:convertDateTime type="date"/>
+						</h:outputText>
+					</h:link>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Saldo Inicial"/>
+					</f:facet>
+					<h:link outcome="/conta/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="itemSaldoInicial" value="#{_item.saldoInicial}"/>
+					</h:link>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Tipo Conta"/>
+					</f:facet>
+					<h:link outcome="/conta/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="forgeviewdisplayitemTipoConta" value="#{forgeview:display(_item.tipoConta)}"/>
+					</h:link>
+				</h:column>
+			</h:dataTable>
+			<ui:include src="/resources/scaffold/paginator.xhtml">
+				<ui:param name="paginatorBean" value="#{contaBean}"/>
+			</ui:include>
+		</h:form>
+			
+	</ui:define>
+
+</ui:composition>

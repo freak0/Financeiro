@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:forgeview="http://jboss.org/forge/view"
+	template="/resources/scaffold/pageTemplate.xhtml">
+
+	<f:metadata>
+		<f:viewParam name="page" value="#{contaPagarBean.page}"/>
+		<f:event type="preRenderView" listener="#{contaPagarBean.paginate}"/>
+	</f:metadata>
+
+	<ui:param name="pageTitle" value="Search Conta Pagar entities"/>
+
+	<ui:define name="header">
+		Conta Pagar
+	</ui:define>
+
+	<ui:define name="subheader">
+		Search Conta Pagar entities
+	</ui:define>
+
+	<ui:define name="footer"/>
+
+	<ui:define name="main">
+		<h:form id="search">
+			<f:validateBean disabled="true">
+				<h:panelGroup styleClass="search">
+
+					<h:panelGrid columnClasses="label,component,required" columns="3">
+						<h:outputLabel for="contaPagarBeanExampleNome" value="Nome:"/>
+						<h:panelGroup>
+							<h:inputText id="contaPagarBeanExampleNome" maxLength="75" value="#{contaPagarBean.example.nome}"/>
+							<h:message for="contaPagarBeanExampleNome" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+						<h:outputLabel for="contaPagarBeanExampleCodigoDeBarra" value="Codigo De Barra:"/>
+						<h:panelGroup>
+							<h:inputText id="contaPagarBeanExampleCodigoDeBarra" maxLength="50" value="#{contaPagarBean.example.codigoDeBarra}"/>
+							<h:message for="contaPagarBeanExampleCodigoDeBarra" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+						<h:outputLabel for="contaPagarBeanExampleCategoriaDespesa" value="Categoria Despesa:"/>
+						<h:panelGroup>
+							<h:selectOneMenu converter="#{categoriaDespesaBean.converter}" id="contaPagarBeanExampleCategoriaDespesa" value="#{contaPagarBean.example.categoriaDespesa}">
+								<f:selectItem/>
+								<f:selectItems itemLabel="#{forgeview:display(_item)}" itemValue="#{_item}" value="#{categoriaDespesaBean.all}" var="_item"/>
+							</h:selectOneMenu>
+							<h:message for="contaPagarBeanExampleCategoriaDespesa" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+					</h:panelGrid>
+					<h:panelGroup styleClass="buttons">
+						<h:commandLink value="Search" action="#{contaPagarBean.search}" styleClass="btn btn-primary"/>
+						<h:commandLink value="Create New" action="#{contaPagarBean.create}" styleClass="btn btn-primary"/>
+					</h:panelGroup>
+				</h:panelGroup>
+			</f:validateBean>
+			
+			<h:dataTable id="contaPagarBeanPageItems" styleClass="data-table" value="#{contaPagarBean.pageItems}" var="_item">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Nome"/>
+					</f:facet>
+					<h:link outcome="/contaPagar/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="itemNome" value="#{_item.nome}"/>
+					</h:link>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Valor"/>
+					</f:facet>
+					<h:link outcome="/contaPagar/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="itemValor" value="#{_item.valor}"/>
+					</h:link>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Data Vencimento"/>
+					</f:facet>
+					<h:link outcome="/contaPagar/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="itemDataVencimento" value="#{_item.dataVencimento}">
+							<f:convertDateTime type="date"/>
+						</h:outputText>
+					</h:link>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Esta Paga"/>
+					</f:facet>
+					<h:link outcome="/contaPagar/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText styleClass="#{_item.estaPaga ? 'boolean-true' : 'boolean-false'}" value=""/>
+					</h:link>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Categoria Despesa"/>
+					</f:facet>
+					<h:link outcome="/contaPagar/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="forgeviewdisplayitemCategoriaDespesa" value="#{forgeview:display(_item.categoriaDespesa)}"/>
+					</h:link>
+				</h:column>
+			</h:dataTable>
+			<ui:include src="/resources/scaffold/paginator.xhtml">
+				<ui:param name="paginatorBean" value="#{contaPagarBean}"/>
+			</ui:include>
+		</h:form>
+			
+	</ui:define>
+
+</ui:composition>
